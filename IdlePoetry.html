@@ -63,6 +63,17 @@
 			transform: scale(0.99);
 		}
 
+		.button:hover {
+			transform: scale(1.10);
+			background-color: #eee;
+			transition: all .1s ease-in-out;
+		}
+		.button:active {
+			transform: scale(0.99);
+			background-color: #ccc;
+			transition: all .1s ease-in-out;
+		}
+
 		.shopbutton:hover {
 			transform: scale(1.10);
 			background-color: #eee;
@@ -145,6 +156,11 @@
 		<br>
 
 		<img class="unselectable" src="images/paper.png" height="300px" width="300px" onclick="addToScore(clickingpower)">
+		<br><br>
+
+		<button class="button" onclick="savegame();">Save
+			
+		</button>
 		
 </center>
 	</div>
@@ -210,9 +226,10 @@
 
 
 <div class="sectionFooter">
-<p><b>Version:</b> 0,000000002</p>
-<p><b>Latest update:</b> Improved buttons, added book button, layout improvements</p>
-<p><b>Next update:</b> Save process</p>
+<p><b>Version:</b> 0,000000003</p>
+<p><b>Latest update:</b> Added Save and Reset buttons, ability to save and load process, bug fixes</p>
+<p><b>Next update:</b> More buttons, bug fixes</p>
+<button onclick="resetgame();">Reset</button>
 </div>
 
 
@@ -233,15 +250,78 @@
 		var farm = 0;
 		var mine = 0;
 
+		function loadgame() {
+			var savedgame = JSON.parse(localstorage.getItem("gamesave"));
+			if ( typeof savedgame.score !== "undefined") score = savedgame.score;
+			if ( typeof savedgame.clickingpower !== "undefined") clickingpower = savedgame.clickingpower;
+			if ( typeof savedgame.cursorcost !== "undefined") cursorcost = savedgame.cursorcost;
+			if ( typeof savedgame.cursors !== "undefined") cursors = savedgame.cursors;
+			if ( typeof savedgame.grandmacost !== "undefined") grandmacost = savedgame.grandmacost;
+			if ( typeof savedgame.grandmas !== "undefined") grandmas = savedgame.grandmas;
+			if ( typeof savedgame.farmcost !== "undefined") farmcost = savedgame.farmcost;
+			if ( typeof savedgame.farm !== "undefined") farm = savedgame.farm;
+			if ( typeof savedgame.minecost !== "undefined") minecost = savedgame.minecost;
+			if ( typeof savedgame.mine !== "undefined") mine = savedgame.mine;
+		}
+
+		function savegame() {
+			var gamesave = {
+				score: score,
+				clickingpower: clickingpower,
+				cursorcost: cursorcost,
+				cursors: cursors,
+				grandmacost: grandmacost,
+				grandmas: grandmas,
+				farmcost: farmcost,
+				farm: farm,
+				minecost: minecost,
+				mine: mine
+			};
+			localstorage.setItem("gamesave", JSON.stringify(gamesave));
+		}
+
+		function resetgame() {
+			if (confirm("Are you sure you want to reset your game"))
+				var gamesave = {};
+			    localstorage.setItem("gamesave", JSON.stringify(gamesave));
+			    location.reload();
+		}
+
+		setInterval(function(){
+			savegame();
+		}, 30000); //30000ms=30s
+
+		document.addEventListener("keydown", function(event){
+			if (event.ctrlKey && event.which == 83) { // ctrl + s
+				event.preventDefault();
+				savegame();
+			}
+		},false); 
+
+		window.onload = function() {
+			loadgame();
+			updatescorepersecond();
+			document.getElementById("score").innerHTML =score;
+			document.getElementById("cursorcost").innerHTML =cursorcost;
+			document.getElementById("cursors").innerHTML =cursors;
+			document.getElementById("grandmacost").innerHTML =grandmacost;
+			document.getElementById("grandmas").innerHTML =grandmas;
+			document.getElementById("farmcost").innerHTML =farmcost;
+			document.getElementById("farm").innerHTML =farm;
+			document.getElementById("minecost").innerHTML =minecost;
+			document.getElementById("mine").innerHTML =mine;
+
+		};
+
 		function buycursor() {
 			if (score >= cursorcost){
 				score = score - cursorcost;
 				cursors = cursors + 1;
 				cursorcost = Math.round(cursorcost * 1.15);
 
-				document.getElementById("score").innerHTML =score
-				document.getElementById("cursorcost").innerHTML =cursorcost
-				document.getElementById("cursors").innerHTML =cursors
+				document.getElementById("score").innerHTML =score;
+				document.getElementById("cursorcost").innerHTML =cursorcost;
+				document.getElementById("cursors").innerHTML =cursors;
 				updatescorepersecond();
 			}
 		}
@@ -272,9 +352,9 @@
 				grandmas = grandmas + 1;
 				grandmacost = Math.round(grandmacost * 1.15);
 
-				document.getElementById("score").innerHTML =score
-				document.getElementById("grandmacost").innerHTML =grandmacost
-				document.getElementById("grandmas").innerHTML =grandmas
+				document.getElementById("score").innerHTML =score;
+				document.getElementById("grandmacost").innerHTML =grandmacost;
+				document.getElementById("grandmas").innerHTML =grandmas;
 				updatescorepersecond();
 			}
 		}
@@ -293,9 +373,9 @@
 				farm = farm + 1;
 				farmcost = Math.round(farmcost * 1.15);
 
-				document.getElementById("score").innerHTML =score
-				document.getElementById("farmcost").innerHTML =farmcost
-				document.getElementById("farm").innerHTML =farm
+				document.getElementById("score").innerHTML =score;
+				document.getElementById("farmcost").innerHTML =farmcost;
+				document.getElementById("farm").innerHTML =farm;
 				updatescorepersecond();
 			}
 		}
@@ -313,9 +393,9 @@
 				mine = mine + 1;
 				minecost = Math.round(minecost * 1.15);
 
-				document.getElementById("score").innerHTML =score
-				document.getElementById("minecost").innerHTML =minecost
-				document.getElementById("mine").innerHTML =mine
+				document.getElementById("score").innerHTML =score;
+				document.getElementById("minecost").innerHTML =minecost;
+				document.getElementById("mine").innerHTML =mine;
 				updatescorepersecond();
 			}
 		}
