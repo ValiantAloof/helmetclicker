@@ -10,10 +10,7 @@
 
 	<title>Idle Poetry</title>
 	<style>
-		span {
-			color: red;
-			font-size: 120%;
-		}
+	
 		em {
 			color: red;
 			font-style: normal;
@@ -35,6 +32,12 @@
 			padding-right: 10px;
 			float: right;
 			width: 30%;
+		}
+
+		.sectionFooter {
+			font-size: 24px;
+			margin-top: 20%;
+			float: left;
 		}
 
 		.important {
@@ -59,21 +62,48 @@
 		.clickercontainer img:active {
 			transform: scale(0.99);
 		}
-		.button {
-			padding: 20px;
-			width: 400px;
-			font-size: 24px;
-			font-weight: bold;
-			border-color: black;
-			border-radius: 5px;
-			position: relative;
+
+		.shopbutton:hover {
+			transform: scale(1.10);
+			background-color: #eee;
 			transition: all .1s ease-in-out;
 		}
-		.button:hover {
-			transform: scale(1.10);
-		}
-		.button:active {
+		.shopbutton:active {
 			transform: scale(0.99);
+			background-color: #ccc;
+			transition: all .1s ease-in-out;
+		}
+		.shopbutton {
+			background-color: #ddd;
+			transition: all .1s ease-in-out;
+			border-radius: 5px;
+			width: 100%;
+			margin: 10px 0px 10px 0px;
+			color: #222;
+
+		}
+		.shopbutton #image{
+			width: 25%;
+		}
+		.shopbutton img {
+			height: 70px;
+			width: 70px;
+		}
+		.shopbutton #nameandcost p {
+			margin: 0px;
+			width: 60%;
+		}
+		.shopbutton #nameandcost p:first-of-type {
+			font-size: 30px;
+		}
+		.shopbutton #amount {
+			font-size: 48px;
+			color: #666;
+			font-family: roboto;
+			width: 15%;
+		}
+		.unselectable {
+			user-select: none;
 		}
 	</style>
 
@@ -94,15 +124,15 @@
 
 <center>
 
-<div class="sectionLeft">
+<div class="sectionLeft unselectable">
 
-	<div class="scorecontainer">
+	<div class="scorecontainer unselectable">
 		
 		
 	      Write a <b>poem</b>!
 	      <br><br>
 
-	      <span id="score">0</span> fame<br>
+	      <span style="font-size: 50px;" id="score">0</span> <span style="font-size: 40px;">fame</span><br>
 	      <br>
 	      <span id="scorepersecond">0</span> fame per second
 
@@ -110,11 +140,11 @@
     </div>
 
 	<br>
-	<div class="clickercontainer">
+	<div class="clickercontainer unselectable">
 
 		<br>
 
-		<img src="images/paper.png" height="300px" width="300px" onclick="addToScore(clickingpower)">
+		<img class="unselectable" src="images/paper.png" height="300px" width="300px" onclick="addToScore(clickingpower)">
 		
 </center>
 	</div>
@@ -126,18 +156,66 @@
 
 </div>
 
-<div class="sectionRight">
+<div class="sectionRight unselectable">
 
-<button class="button" width=500px onclick="buycursor()">Note[<span id="cursors">0</span>] -- <span id="cursorcost">15</span>	
-</button>
-<br>
-<br>
-<button class="button" width=500px onclick="buygrandma()">Haiku[<span id="grandmas">0</span>] -- <span id="grandmacost">100</span>
-</button>
-<br>
-<br>
-<button class="button" width=500px onclick="buyfarm()">Poem[<span id="farm">0</span>] -- <span id="farmcost">500</span>
-</button>
+	<table class="shopbutton unselectable" onclick="buycursor()">
+		<tr>
+			<td id="image"><img src="images/note.png"></td>
+			<td id="nameandcost">
+				<p>Note</p>
+				<p><span id="cursorcost">15</span> fame</p>
+			</td>
+			<td id="amount"><span id="cursors">0</span>
+			</td>
+		</tr>
+		
+	</table>
+
+	<table class="shopbutton unselectable" onclick="buygrandma()">
+		<tr>
+			<td id="image"><img src="images/haiku.png"></td>
+			<td id="nameandcost">
+				<p>Haiku</p>
+				<p><span id="grandmacost">100</span> fame</p>
+			</td>
+			<td id="amount"><span id="grandmas">0</span>
+			</td>
+		</tr>
+		
+	</table>
+
+	<table class="shopbutton unselectable" onclick="buyfarm()">
+		<tr>
+			<td id="image"><img src="images/poem.png"></td>
+			<td id="nameandcost">
+				<p>Poem</p>
+				<p><span id="farmcost">500</span> fame</p>
+			</td>
+			<td id="amount"><span id="farm">0</span>
+			</td>
+		</tr>
+
+		<table class="shopbutton unselectable" onclick="buymine()">
+		<tr>
+			<td id="image"><img src="images/book.png"></td>
+			<td id="nameandcost">
+				<p>Book</p>
+				<p><span id="minecost">1000</span> fame</p>
+			</td>
+			<td id="amount"><span id="mine">0</span>
+			</td>
+		</tr>
+		
+	</table>
+
+
+<div class="sectionFooter">
+<p><b>Version:</b> 0,000000002</p>
+<p><b>Latest update:</b> Improved buttons, added book button, layout improvements</p>
+<p><b>Next update:</b> Save process</p>
+</div>
+
+
 
 </div>
 
@@ -148,10 +226,12 @@
 		var cursorcost = 15;
 		var grandmacost = 100;
 		var farmcost = 500;
+		var minecost = 1000;
 
 		var cursors = 0;
 		var grandmas = 0;
 		var farm = 0;
+		var mine = 0;
 
 		function buycursor() {
 			if (score >= cursorcost){
@@ -166,20 +246,22 @@
 			}
 		}
 
+		setInterval(function() {
+			score = score + cursors;
+			document.getElementById("score").innerHTML=score;
+		}, 1000); //1000ms = 1s
+
 		function addToScore(amount) {
 			score = score + amount;
 			document.getElementById("score").innerHTML =score		
 		}
 
 		function updatescorepersecond(){
-			scorepersecond = cursors + grandmas * 5 + farm * 10;
+			scorepersecond = cursors + grandmas * 5 + farm * 10 + mine * 20;
 			document.getElementById("scorepersecond").innerHTML = scorepersecond;
 		}
 
-		setInterval(function() {
-			score = score + cursors;
-			document.getElementById("score").innerHTML=score;
-		}, 1000); //1000ms = 1s
+		
 
 
 
@@ -225,13 +307,28 @@
 
 
 
+		function buymine() {
+			if (score >= minecost){
+				score = score - minecost;
+				mine = mine + 1;
+				minecost = Math.round(minecost * 1.15);
+
+				document.getElementById("score").innerHTML =score
+				document.getElementById("minecost").innerHTML =minecost
+				document.getElementById("mine").innerHTML =mine
+				updatescorepersecond();
+			}
+		}
+
+		setInterval(function() {
+			score = score + mine * 20;
+			document.getElementById("score").innerHTML=score;
+		}, 1000); //1000ms = 1s
+
+
+
 	</script>
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-
-<p><b>Version:</b> 0,000000001</p>
-<p><b>Next update:</b> better buttons</p>
 
 
 </body>
