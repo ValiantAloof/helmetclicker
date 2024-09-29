@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="idle, clicker, game">
+    <meta name="description" content="The secret life of a poet, who decided to become a graphic designer...">
+    <title>Dark Poetry Idle Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle, rgba(28,28,28,1) 0%, rgba(15,15,15,1) 100%);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: #ff4444;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .panel {
+            background: rgba(44, 44, 44, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+        }
+
+        .shopbutton:hover {
+            transform: scale(1.10);
+            background-color: #eee;
+            transition: all .1s ease-in-out;
+        }
+
+        .shopbutton:active {
+            transform: scale(0.99);
+            background-color: #ccc;
+            transition: all .1s ease-in-out;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff4444 0%, #e60000 100%);
+            color: #1c1c1c;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px 0;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff6666 0%, #ff3333 100%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #555;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 22px;
+            background: linear-gradient(135deg, #ff4444 0%, #e60000 100%);
+            border-radius: 8px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .shopbutton {
+            background-color: #ddd;
+            transition: all .1s ease-in-out;
+            border-radius: 5px;
+            width: 100%;
+            margin: 10px 0px;
+            color: #222;
+        }
+
+        .shopbutton #image {
+            width: 25%;
+        }
+
+        .shopbutton img {
+            height: 70px;
+            width: 70px;
+        }
+
+        .shopbutton #nameandcost p {
+            margin: 0px;
+            width: 60%;
+        }
+
+        .shopbutton #nameandcost p:first-of-type {
+            font-size: 30px;
+        }
+
+        .shopbutton #amount {
+            font-size: 48px;
+            color: #666;
+            font-family: roboto;
+            width: 15%;
+        }
+
+        .clickercontainer img {
+            width: 300px;
+            border-radius: 10px;
+            margin-right: 50px;
+        }
+
+        .clickercontainer img:hover {
+            transform: scale(1.10);
+        }
+
+        .clickercontainer img:active {
+            transform: scale(0.99);
+        }
+
+        #scorecontainer {
+            background-color: #eee;
+            color: #222;
+            width: 50%;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .panel {
+                width: 90%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Dark Poetry Idle Game</h1>
+    </header>
+
+    <div class="container">
+        <!-- Poetry Writing Section -->
+        <div class="panel" id="clicker">
+            <h2>Write Your Poem</h2>
+            <div id="scorecontainer">
+                <p>Fame: <span id="score">0</span></p>
+                <p><span id="scorepersecond">0</span> Fame per second</p>
+            </div>
+            <div class="clickercontainer">
+                <img src="images/paper.png" onclick="addToScore(clickingpower)">
+            </div>
+            <button onclick="savegame()">Save Game</button>
+        </div>
+
+        <!-- Upgrades Section -->
+        <div class="panel">
+            <h2>Shop & Upgrades</h2>
+
+            <table class="shopbutton" onclick="buycursor()">
+                <tr>
+                    <td id="image"><img src="images/note.png"></td>
+                    <td id="nameandcost">
+                        <p>Note</p>
+                        <p><span id="cursorcost">15</span> fame</p>
+                    </td>
+                    <td id="amount"><span id="cursors">0</span></td>
+                </tr>
+            </table>
+
+            <table class="shopbutton" onclick="buygrandma()">
+                <tr>
+                    <td id="image"><img src="images/haiku.png"></td>
+                    <td id="nameandcost">
+                        <p>Haiku</p>
+                        <p><span id="grandmacost">100</span> fame</p>
+                    </td>
+                    <td id="amount"><span id="grandmas">0</span></td>
+                </tr>
+            </table>
+
+            <table class="shopbutton" onclick="buyfarm()">
+                <tr>
+                    <td id="image"><img src="images/poem.png"></td>
+                    <td id="nameandcost">
+                        <p>Poem</p>
+                        <p><span id="farmcost">500</span> fame</p>
+                    </td>
+                    <td id="amount"><span id="farm">0</span></td>
+                </tr>
+            </table>
+
+            <table class="shopbutton" onclick="buymine()">
+                <tr>
+                    <td id="image"><img src="images/book.png"></td>
+                    <td id="nameandcost">
+                        <p>Book</p>
+                        <p><span id="minecost">1000</span> fame</p>
+                    </td>
+                    <td id="amount"><span id="mine">0</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="panel" id="achievements">
+            <h2>Achievements</h2>
+            <ul id="achievementList"></ul>
+        </div>
+    </div>
+
+    <script>
+        var score = 0;
+        var clickingpower = 1;
+
+        var cursorcost = 15;
+        var grandmacost = 100;
+        var farmcost = 500;
+        var minecost = 1000;
+
+        var cursors = 0;
+        var grandmas = 0;
+        var farm = 0;
+        var mine = 0;
+
+        // Function to add score by clicking
+        function addToScore(amount) {
+            score = score + amount;
+            document.getElementById("score").innerHTML = score;
+        }
+
+        // Function to update fame per second
+        function updatescorepersecond() {
+            var scorepersecond = cursors + grandmas * 5 + farm * 10 + mine * 20;
+            document.getElementById("scorepersecond").innerHTML = scorepersecond;
+        }
+
+        // Buy Cursor upgrade
+        function buycursor() {
+            if (score >= cursorcost) {
+                score -= cursorcost;
+                cursors += 1;
+                cursorcost = Math.round(cursorcost * 1.15);
+                updatescorepersecond();
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("cursorcost").innerHTML = cursorcost;
+                document.getElementById("cursors").innerHTML = cursors;
+            }
+        }
+
+        // Buy Haiku upgrade
+        function buygrandma() {
+            if (score >= grandmacost) {
+                score -= grandmacost;
+                grandmas += 1;
+                grandmacost = Math.round(grandmacost * 1.15);
+                updatescorepersecond();
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("grandmacost").innerHTML = grandmacost;
+                document.getElementById("grandmas").innerHTML = grandmas;
+            }
+        }
+
+        // Buy Poem upgrade
+        function buyfarm() {
+            if (score >= farmcost) {
+                score -= farmcost;
+                farm += 1;
+                farmcost = Math.round(farmcost * 1.15);
+                updatescorepersecond();
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("farmcost").innerHTML = farmcost;
+                document.getElementById("farm").innerHTML = farm;
+            }
+        }
+
+        // Buy Book upgrade
+        function buymine() {
+            if (score >= minecost) {
+                score -= minecost;
+                mine += 1;
+                minecost = Math.round(minecost * 1.15);
+                updatescorepersecond();
+                document.getElementById("score").innerHTML = score;
+                document.getElementById("minecost").innerHTML = minecost;
+                document.getElementById("mine").innerHTML = mine;
+            }
+        }
+
+        // Save and Load Game
+        function savegame() {
+            var gamesave = {
+                score: score,
+                clickingpower: clickingpower,
+                cursorcost: cursorcost,
+                cursors: cursors,
+                grandmacost: grandmacost,
+                grandmas: grandmas,
+                farmcost: farmcost,
+                farm: farm,
+                minecost: minecost,
+                mine: mine
+            };
+            localStorage.setItem("gamesave", JSON.stringify(gamesave));
+        }
+
+        function loadgame() {
+            var savedgame = JSON.parse(localStorage.getItem("gamesave"));
+            if (typeof savedgame.score !== "undefined") score = savedgame.score;
+            if (typeof savedgame.clickingpower !== "undefined") clickingpower = savedgame.clickingpower;
+            if (typeof savedgame.cursorcost !== "undefined") cursorcost = savedgame.cursorcost;
+            if (typeof savedgame.cursors !== "undefined") cursors = savedgame.cursors;
+            if (typeof savedgame.grandmacost !== "undefined") grandmacost = savedgame.grandmacost;
+            if (typeof savedgame.grandmas !== "undefined") grandmas = savedgame.grandmas;
+            if (typeof savedgame.farmcost !== "undefined") farmcost = savedgame.farmcost;
+            if (typeof savedgame.farm !== "undefined") farm = savedgame.farm;
+            if (typeof savedgame.minecost !== "undefined") minecost = savedgame.minecost;
+            if (typeof savedgame.mine !== "undefined") mine = savedgame.mine;
+
+            document.getElementById("score").innerHTML = score;
+            document.getElementById("cursorcost").innerHTML = cursorcost;
+            document.getElementById("cursors").innerHTML = cursors;
+            document.getElementById("grandmacost").innerHTML = grandmacost;
+            document.getElementById("grandmas").innerHTML = grandmas;
+            document.getElementById("farmcost").innerHTML = farmcost;
+            document.getElementById("farm").innerHTML = farm;
+            document.getElementById("minecost").innerHTML = minecost;
+            document.getElementById("mine").innerHTML = mine;
+            updatescorepersecond();
+        }
+
+        window.onload = function () {
+            loadgame();
+            updatescorepersecond();
+        };
+
+        setInterval(function () {
+            score += cursors + grandmas * 5 + farm * 10 + mine * 20;
+            document.getElementById("score").innerHTML = score;
+        }, 1000); // 1000ms = 1s
+
+        setInterval(function () {
+            savegame();
+        }, 30000); // 30 seconds
+    </script>
+</body>
+</html>
+
